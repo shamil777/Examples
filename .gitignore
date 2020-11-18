@@ -1,0 +1,66 @@
+# ignore ipynb files everywhere except from `ipynb_dir`
+*.ipynb
+!ipynb_dir/*.ipynb
+!ipynb_dir/*/*.ipynb
+!/Examples/*.ipynb
+!/Examples/*/*.ipynb
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*.pkl
+*$py.class
+# pycharm project settings
+.idea/
+.idea/*
+
+# Graphics design files
+*.cdr
+*.gds
+
+# C extensions
+*.so
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# pyenv
+.python-version
+
+# celery beat schedule file
+celerybeat-schedule
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Temporary files and tables like .xls/xlsx/csv
+*.xls
+*.xlsx
+*.csv
+*.son
+*.sid
+
+# VSCode project settings
+.vscode/
+.vscode/*
+
+*.gds
+*.doc
+*iml
+*xml
+/transmon-simulations/.ipynb_checkpoints/
