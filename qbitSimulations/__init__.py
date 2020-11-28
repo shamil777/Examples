@@ -8,3 +8,6 @@ reload(transmon_chain)
 
 from . import two_transmons
 reload(two_transmons)
+
+from . import extended_ops
+reload(extended_ops)

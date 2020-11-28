@@ -13,6 +13,7 @@ __pycache__/
 # pycharm project settings
 .idea/
 .idea/*
+*.log
 
 # Graphics design files
 *.cdr
@@ -28,7 +29,7 @@ docs/_build/
 target/
 
 # Jupyter Notebook
-.ipynb_checkpoints
+*.ipynb_checkpoints*
 
 # pyenv
 .python-version
@@ -59,8 +60,6 @@ venv.bak/
 .vscode/
 .vscode/*
 
-*.gds
 *.doc
 *iml
 *xml
-/transmon-simulations/.ipynb_checkpoints/

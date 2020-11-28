@@ -3,10 +3,42 @@ from numpy import pi, sqrt, abs
 
 import qutip as qp
 
-
 class Transmon:
     def __init__(self, Ec, Ej, d, gamma_rel, gamma_phi,
                  Nc, N_trunc, index, nonlinear_osc=False):
+        """
+        Parameters
+        ----------
+        Ec : float
+            Transmon's charge energy Ec = e^2/2C
+        Ej : float
+            Transmon's larger JJ tunelling energy
+        d : float
+            assymetry of transmon's JJs. Equals to
+            (EJ1 - EJ2) / (EJ1 + EJ2), where
+            EJ1 > EJ2 - JJs tunneling energies
+        gamma_rel : float
+            effective rate for radial relaxation of the state due to
+            coupling to the external bath (used for Lindblad equations)
+        gamma_phi : float
+            effective dephasing rate of the state due to
+            coupling to the external bath (used for Lindblad equations)
+        Nc : int
+            maximum Cooper pairs number in charge basis used as a dimension
+            of an approximating finitie-dimension Hilbert space.
+             `deg(H) = 2*Nc + 1` - including |-Nc>, |0> and |Nc> cooper pair states.
+        N_trunc : int
+            ??
+        index : int
+            ??
+        nonlinear_osc : bool
+            Regulates how many terms to keep after substiting system operators
+            by Bose's creation and destruction operators and exanding the equation.
+                if `True` - the model corresponds to Duffing oscillator
+            (first nonlinear term that keeps the number of excitations)
+                if `False` - aprroximation is pure harmonic oscillator
+            (all but first dropped)
+        """
         self._Ec = Ec
         self._Ej = Ej
         self._d = d
@@ -45,8 +77,11 @@ class Transmon:
     def Hc(self):
         return 4 * (self._Ec) * qp.charge(self._Nc) ** 2
 
-    def Hj(self, phi):
-        return - self._Ej * self._phi_coeff(phi) * qp.tunneling(self._Ns, 1)/2
+    def Hj(self, phi, account_cosine_phase=False):
+        if account_cosine_phase:
+            return (- self._Ej * self._phi_coef_Hj(phi) * 1/2) * ()  # TODO: account for phase
+        else:
+            return (- self._Ej * self._phi_coef_Hj(phi) * 1/2) * qp.tunneling(self._Ns, 1)
 
     def Hj_td(self, phi_waveform):
         return [- self._Ej / 2 * qp.tunneling(self._Ns, 1), self._phi_coeff(phi_waveform)]
@@ -153,7 +188,8 @@ class Transmon:
 
     def _phi_coeff(self, phi):
         """
-        Returns coefficient for josephson junctions potential energy
+        Returns coefficient for analytical approximation of
+        eigenenergies.
 
         Parameters
         ----------
@@ -166,6 +202,9 @@ class Transmon:
             coefficient for josephson junctions potential energy
         """
         return (np.cos(phi * pi)**2 + (self._d * np.sin(phi * pi)) ** 2) ** 0.25
+
+    def _phi_coef_Hj(self, phi):
+        return 2/(self._d + 1) * (np.cos(phi * pi)**2 + (self._d * np.sin(phi * pi)) ** 2)**0.5
 
     def get_Ns(self):
         return self._N_trunc
